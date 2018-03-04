@@ -1,9 +1,12 @@
 package com.hania.gui.view;
 
 import com.hania.process.ItemType;
+import com.hania.process.Warehouse;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
+import javax.swing.table.TableColumnModel;
 import java.awt.*;
 import java.util.Map;
 
@@ -12,14 +15,21 @@ import java.util.Map;
  */
 public class ItemsTableView extends JScrollPane {
 
-    private JTable table;
     private DefaultTableModel model;
+    private Warehouse warehouse;
+
     private Map<ItemType, Integer> collection;
 
+    private JTable table;
     public ItemsTableView(Map<ItemType, Integer> collection, int width, int height) {
-        Object[] columns = new String[]{"Items", "Price"};    // todo intenationalization
+        Object[] columns = new String[]{"Items", "Price", "Change number"};    // todo intenationalization
         model = new DefaultTableModel(columns, 0);
+
         table = new JTable(model);
+        TableColumnModel tcm = table.getColumnModel();
+        TableColumn tc = tcm.getColumn(2);
+        tc.setCellEditor(new SpinnerEditor(collection));
+
         table.setRowSelectionAllowed(false);
         this.collection = collection;
 
@@ -27,8 +37,17 @@ public class ItemsTableView extends JScrollPane {
         setPreferredSize(new Dimension(width, height));
     }
 
+    public Map<ItemType, Integer> getCollection() {
+        return collection;
+    }
+
     public void setCollection(Map<ItemType, Integer> collection) {
         this.collection = collection;
+        refresh();
+    }
+
+    public void setWarehouse(Warehouse warehouse) {
+        this.warehouse = warehouse;
         refresh();
     }
 
@@ -36,9 +55,10 @@ public class ItemsTableView extends JScrollPane {
         model.setRowCount(0);
 
         for (Map.Entry<ItemType, Integer> entry : collection.entrySet()) {
-            Object[] o = new String[]{                      // todo intenationalization
+            Object[] o = new Object[]{                      // todo intenationalization
                     entry.getValue().toString() + " " + entry.getKey().toString().toLowerCase(),
-                    getItemPrice(entry.getKey())
+                    getItemPrice(entry.getKey()),
+                    entry.getValue()
             };
             model.addRow(o);
         }

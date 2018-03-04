@@ -36,9 +36,9 @@ class ItemsFrameController {
         warehouse.loadItems();
 
         Map<ItemType, Integer> items = warehouse.getItems();
-        itemsTableView.setCollection(items);
 
-        // todo why the table doesn't show up
+        itemsTableView.setWarehouse(warehouse);
+//        itemsTableView.setCollection(items);
     }
 
     private void initComponents() {
