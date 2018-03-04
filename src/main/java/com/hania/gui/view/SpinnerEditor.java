@@ -9,7 +9,6 @@ import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.text.ParseException;
 import java.util.EventObject;
-import java.util.Map;
 
 /**
  * @author <a href="mailto:226154@student.pwr.edu.pl">Hanna Grodzicka</a>
@@ -19,17 +18,56 @@ public class SpinnerEditor extends DefaultCellEditor {
     private JSpinner.DefaultEditor editor;
     private JTextField textField;
     private boolean valueSet;
-    private Map<ItemType, Integer> collection;
+
+    private int rowIndex;
+    private int colIndex;
+    private Integer previousItemNumber;
 
     // Initializes the spinner
-    SpinnerEditor(Map<ItemType, Integer> collection) {
+    SpinnerEditor() {
         super(new JTextField());
-        this.collection = collection;
         spinner = new JSpinner();
         editor = ((JSpinner.DefaultEditor) spinner.getEditor());
         textField = editor.getTextField();
+
+//        textField.getDocument().addDocumentListener(new DocumentListener() {
+//            @Override
+//            public void insertUpdate(DocumentEvent e) {
+//                System.out.println("insert");
+//                Object selectedObject = ItemsTableView.table.getModel().getValueAt(rowIndex, colIndex+1);
+//                ItemsTableView.warehouse.addItem(ItemType.valueOf(selectedObject.toString().toUpperCase()));
+//            }
+//
+//            @Override
+//            public void removeUpdate(DocumentEvent e) {
+//                System.out.println("remove");
+//                Object selectedObject = ItemsTableView.table.getModel().getValueAt(rowIndex, colIndex+1);
+//                ItemsTableView.warehouse.deleteItem(ItemType.valueOf(selectedObject.toString().toUpperCase()));
+//            }
+//
+//            @Override
+//            public void changedUpdate(DocumentEvent e) {
+//            }
+//        });
+        spinner.addChangeListener(e -> {
+            Object selectedObject = ItemsTableView.table.getModel().getValueAt(rowIndex, colIndex + 1);
+            if (previousItemNumber < Integer.parseInt(textField.getText())) {
+                System.out.println("insert");
+                ItemsTableView.warehouse.addItem(ItemType.valueOf(selectedObject.toString().toUpperCase()));
+            } else if (previousItemNumber > Integer.parseInt(textField.getText())) {
+                System.out.println("remove");
+                ItemsTableView.warehouse.deleteItem(ItemType.valueOf(selectedObject.toString().toUpperCase()));
+            }
+        });
+
         textField.addFocusListener(new FocusListener() {
+
+            @Override
             public void focusGained(FocusEvent fe) {
+                rowIndex = ItemsTableView.table.getSelectedRow();
+                colIndex = ItemsTableView.table.getSelectedColumn();
+                previousItemNumber = Integer.parseInt(textField.getText());
+
                 SwingUtilities.invokeLater(() -> {
                     if (valueSet) {
                         textField.setCaretPosition(1);
@@ -39,7 +77,6 @@ public class SpinnerEditor extends DefaultCellEditor {
 
             @Override
             public void focusLost(FocusEvent fe) {
-//                collection.
             }
         });
         textField.addActionListener(ae -> stopCellEditing());
@@ -82,9 +119,5 @@ public class SpinnerEditor extends DefaultCellEditor {
             JOptionPane.showMessageDialog(null, "Invalid value, discarding.");
         }
         return super.stopCellEditing();
-    }
-
-    public Map<ItemType, Integer> getCollection() {
-        return collection;
     }
 }

@@ -1,7 +1,8 @@
 package com.hania.gui.view;
 
+import com.hania.process.WarehouseImpl;
+
 import javax.swing.*;
-import java.util.HashMap;
 
 /**
  * @author <a href="mailto:226154@student.pwr.edu.pl">Hanna Grodzicka</a>
@@ -33,6 +34,6 @@ public class ItemsFrame extends JFrame {
     }
 
     private void createUIComponents() {
-        itemsTableView = new ItemsTableView(new HashMap<>(), 500, 500);
+        itemsTableView = new ItemsTableView(new WarehouseImpl(), 500, 500);
     }
 }

@@ -16,34 +16,24 @@ import java.util.Map;
 public class ItemsTableView extends JScrollPane {
 
     private DefaultTableModel model;
-    private Warehouse warehouse;
+    static Warehouse warehouse;
+    static JTable table;
 
-    private Map<ItemType, Integer> collection;
-
-    private JTable table;
-    public ItemsTableView(Map<ItemType, Integer> collection, int width, int height) {
+    public ItemsTableView(Warehouse warehouse, int width, int height) {
+        this.warehouse = warehouse;
         Object[] columns = new String[]{"Items", "Price", "Change number"};    // todo intenationalization
         model = new DefaultTableModel(columns, 0);
 
         table = new JTable(model);
+        table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         TableColumnModel tcm = table.getColumnModel();
-        TableColumn tc = tcm.getColumn(2);
-        tc.setCellEditor(new SpinnerEditor(collection));
+        TableColumn tc0 = tcm.getColumn(0);
+        tc0.setCellEditor(new SpinnerEditor());
 
         table.setRowSelectionAllowed(false);
-        this.collection = collection;
 
         setViewportView(table);
         setPreferredSize(new Dimension(width, height));
-    }
-
-    public Map<ItemType, Integer> getCollection() {
-        return collection;
-    }
-
-    public void setCollection(Map<ItemType, Integer> collection) {
-        this.collection = collection;
-        refresh();
     }
 
     public void setWarehouse(Warehouse warehouse) {
@@ -54,11 +44,11 @@ public class ItemsTableView extends JScrollPane {
     private void refresh() {
         model.setRowCount(0);
 
-        for (Map.Entry<ItemType, Integer> entry : collection.entrySet()) {
+        for (Map.Entry<ItemType, Integer> entry : warehouse.getItems().entrySet()) {
             Object[] o = new Object[]{                      // todo intenationalization
-                    entry.getValue().toString() + " " + entry.getKey().toString().toLowerCase(),
+                    entry.getValue(),
+                    entry.getKey().toString().toLowerCase(),
                     getItemPrice(entry.getKey()),
-                    entry.getValue()
             };
             model.addRow(o);
         }
