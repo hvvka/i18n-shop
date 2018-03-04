@@ -17,4 +17,4 @@ build/
 .gradle/
 
 #GUI forms
-*.form
+#*.form

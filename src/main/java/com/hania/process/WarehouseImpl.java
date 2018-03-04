@@ -52,7 +52,7 @@ public class WarehouseImpl implements Warehouse {
 
     private void saveToJson() {
         try (Writer writer = new FileWriter(storage)) {
-            Gson gson = new GsonBuilder().create();
+            Gson gson = new GsonBuilder().setPrettyPrinting().create();
             gson.toJson(items, writer);
         } catch (IOException e) {
             throw new UncheckedIOException(e);
