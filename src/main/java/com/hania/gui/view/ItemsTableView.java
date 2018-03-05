@@ -21,7 +21,7 @@ public class ItemsTableView extends JScrollPane {
 
     public ItemsTableView(Warehouse warehouse, int width, int height) {
         this.warehouse = warehouse;
-        Object[] columns = new String[]{"Items", "Price", "Change number"};    // todo intenationalization
+        Object[] columns = new String[]{"Number of items", "Items", "Price"};    // todo intenationalization
         model = new DefaultTableModel(columns, 0);
 
         table = new JTable(model);

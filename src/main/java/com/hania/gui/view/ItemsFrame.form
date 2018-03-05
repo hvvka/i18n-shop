@@ -16,7 +16,7 @@
         </constraints>
         <properties>
           <background color="-4668692"/>
-          <text value="← Back to Menu"/>
+          <text resource-bundle="MessageBundle" key="menu.back"/>
         </properties>
       </component>
       <scrollpane id="fe3d0" class="com.hania.gui.view.ItemsTableView" binding="itemsTableView" custom-create="true">

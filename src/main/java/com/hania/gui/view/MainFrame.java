@@ -2,7 +2,6 @@ package com.hania.gui.view;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ResourceBundle;
 
 /**
  * @author <a href="mailto:226154@student.pwr.edu.pl">Hanna Grodzicka</a>
@@ -35,7 +34,4 @@ public class MainFrame extends JFrame {
         return chooseLanguageComboBox;
     }
 
-    public void setResourceBundle(String resourceBundlePath) {
-        ResourceBundle.getBundle(resourceBundlePath);
-    }
 }

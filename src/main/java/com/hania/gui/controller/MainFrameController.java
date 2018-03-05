@@ -3,6 +3,8 @@ package com.hania.gui.controller;
 import com.hania.gui.view.MainFrame;
 
 import javax.swing.*;
+import java.util.Objects;
+import java.util.ResourceBundle;
 
 /**
  * @author <a href="mailto:226154@student.pwr.edu.pl">Hanna Grodzicka</a>
@@ -34,11 +36,19 @@ public class MainFrameController {
         });
 
         chooseLanguageComboBox.addActionListener(ae -> {
-//            if (Objects.requireNonNull(chooseLanguageComboBox.getSelectedItem()).toString().equals("English")) {
-//                mainFrame.setResourceBundle("src/main/java/com/hania/bundles/i18n/en.properties");
-//            } else {
-//                mainFrame.setResourceBundle("src/main/java/com/hania/bundles/i18n/pl.properties");
-//            }
+            switch (Objects.requireNonNull(chooseLanguageComboBox.getSelectedItem()).toString()) {
+                case "EN":
+                    ResourceBundle.getBundle("MessageBundle_en_GB");
+                    break;
+                case "PL":
+                    ResourceBundle.getBundle("MessageBundle_pl_PL");
+                    break;
+                default:
+                    ResourceBundle.getBundle("MessageBundle_de_DE");
+                    break;
+            }
+            mainFrame.revalidate();
+            mainFrame.repaint();
             // todo localization
         });
 
