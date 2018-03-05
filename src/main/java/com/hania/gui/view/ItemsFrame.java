@@ -18,7 +18,7 @@ public class ItemsFrame extends JFrame {
     private ItemsTableView itemsTableView;
 
     public ItemsFrame() {
-        super("Electronics shop");
+        super("");
         setSize(WIDTH, HEIGHT);
         setLocationRelativeTo(null);
         setContentPane(itemsPanel);

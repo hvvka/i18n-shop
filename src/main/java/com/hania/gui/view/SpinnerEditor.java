@@ -29,7 +29,6 @@ public class SpinnerEditor extends DefaultCellEditor {
         spinner = new JSpinner() {
             @Override
             public void commitEdit() throws ParseException {
-                super.commitEdit();
                 if (rowIndex >= 0 && colIndex == 1) {
                     Object selectedObject = ItemsTableView.table.getModel().getValueAt(rowIndex, colIndex - 1);
                     if (previousItemNumber < Integer.parseInt(textField.getText())) {
@@ -39,12 +38,13 @@ public class SpinnerEditor extends DefaultCellEditor {
                         System.out.println("remove");
                         ItemsTableView.warehouse.deleteItem(ItemType.valueOf(selectedObject.toString().toUpperCase()));
                     }
-                    textField.setText(ItemsTableView.warehouse.getItems()
-                            .get(ItemType.valueOf(selectedObject.toString().toUpperCase()))
-                            .toString());
+//                    textField.setText(ItemsTableView.warehouse.getItems()
+//                            .get(ItemType.valueOf(selectedObject.toString().toUpperCase()))
+//                            .toString());
 
                     itemsTableView.refresh();
                 }
+                super.commitEdit();
             }
         };
         editor = ((JSpinner.DefaultEditor) spinner.getEditor());

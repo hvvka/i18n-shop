@@ -24,7 +24,7 @@ public class MainFrame extends JFrame {
     private JLabel languageLabel;
 
     public MainFrame() {
-        super("Electronics shop");
+        super("");
         setSize(WIDTH, HEIGHT);
         setLocationRelativeTo(null);
         setContentPane(mainPanel);

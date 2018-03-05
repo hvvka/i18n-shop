@@ -26,15 +26,26 @@ public class ItemsTableView extends JScrollPane {
         ItemsTableView.warehouse = warehouse;
 
         String tableColumnKey = "table.column";
-        Object[] columns = new String[]{
+        Object[] columnNames = new String[]{
                 MainFrame.resourceBundle.getString(tableColumnKey + "0"),
                 MainFrame.resourceBundle.getString(tableColumnKey + "1"),
                 MainFrame.resourceBundle.getString(tableColumnKey + "2"),
-                MainFrame.resourceBundle.getString(tableColumnKey + "3")
-        };    // todo intenationalization
-        model = new DefaultTableModel(columns, 0);
+                MainFrame.resourceBundle.getString(tableColumnKey + "3"),
+                MainFrame.resourceBundle.getString(tableColumnKey + "4")
+        };
+        model = new DefaultTableModel(columnNames, 0) {
+            //  Returning the Class of each column will allow different
+            //  renderers to be used based on Class
+            @Override
+            public Class getColumnClass(int column) {
+                return getValueAt(0, column).getClass();
+            }
+        };
 
         table = new JTable(model);
+        table.setPreferredScrollableViewportSize(table.getPreferredSize());
+        table.setRowHeight(100);
+        table.getColumnModel().getColumn(3).setWidth(100);
         table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
         hideFirstColumn();
@@ -62,6 +73,7 @@ public class ItemsTableView extends JScrollPane {
 
     void refresh() {
         model.setRowCount(0);
+//        Icon itemIcon;
 
         for (Map.Entry<ItemType, Integer> entry : warehouse.getItems().entrySet()) {
             Object[] o = new Object[]{                      // todo intenationalization
@@ -69,6 +81,7 @@ public class ItemsTableView extends JScrollPane {
                     entry.getValue(),
                     getItemName(entry),
                     getItemPrice(entry.getKey()),
+                    new ImageIcon("src/main/resources/items/" + entry.getKey() + ".jpg")
             };
             model.addRow(o);
         }
@@ -76,8 +89,45 @@ public class ItemsTableView extends JScrollPane {
 
     private String getItemName(Map.Entry<ItemType, Integer> entry) {
         String bundleKey;
+
+        switch (MainFrame.currentLocale.getCountry()) {
+            case "PL":
+                bundleKey = setPolishItemNames(entry);
+                break;
+            case "GB":
+                bundleKey = setEnglishItemNames(entry);
+                break;
+            case "DE":
+                bundleKey = setEnglishItemNames(entry);     // todo, ale będzie tak samo jak dla niemieckiego
+                break;
+            default:
+                bundleKey = setEnglishItemNames(entry);
+                break;
+        }
+
+        return MainFrame.resourceBundle.getString(bundleKey);
+    }
+
+    private String setEnglishItemNames(Map.Entry<ItemType, Integer> entry) {
+        String bundleKey;// item.zero
+        if (entry.getValue() == 0) {
+            bundleKey = "item.zero." + entry.getKey().toString().toLowerCase();
+        }
+        // item.one
+        else if (entry.getValue() == 1) {
+            bundleKey = "item.one." + entry.getKey().toString().toLowerCase();
+        }
         // item.two
-        if (entry.getValue() % 10 >= 2 && entry.getValue() % 10 <= 4) {
+        else {
+            bundleKey = "item.zero." + entry.getKey().toString().toLowerCase();
+        }
+        return bundleKey;
+    }
+
+    private String setPolishItemNames(Map.Entry<ItemType, Integer> entry) {
+        String bundleKey;// item.two
+        if (entry.getValue() % 10 >= 2 && entry.getValue() % 10 <= 4
+                && entry.getValue() != 12 && entry.getValue() != 13 && entry.getValue() != 14) {
             bundleKey = "item.two." + entry.getKey().toString().toLowerCase();
         }
         // item.one
@@ -88,8 +138,7 @@ public class ItemsTableView extends JScrollPane {
         else {
             bundleKey = "item.zero." + entry.getKey().toString().toLowerCase();
         }
-
-        return MainFrame.resourceBundle.getString(bundleKey);
+        return bundleKey;
     }
 
     private String getItemPrice(ItemType key) {
