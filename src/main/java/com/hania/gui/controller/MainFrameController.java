@@ -3,8 +3,8 @@ package com.hania.gui.controller;
 import com.hania.gui.view.MainFrame;
 
 import javax.swing.*;
+import java.util.Locale;
 import java.util.Objects;
-import java.util.ResourceBundle;
 
 /**
  * @author <a href="mailto:226154@student.pwr.edu.pl">Hanna Grodzicka</a>
@@ -15,6 +15,8 @@ public class MainFrameController {
 
     private JButton showProductsButton;
     private JComboBox chooseLanguageComboBox;
+
+    private Locale currentLocale;
 
     public MainFrameController() {
         initComponents();
@@ -36,21 +38,41 @@ public class MainFrameController {
         });
 
         chooseLanguageComboBox.addActionListener(ae -> {
+            String language;
+            String country;
+
             switch (Objects.requireNonNull(chooseLanguageComboBox.getSelectedItem()).toString()) {
                 case "EN":
-                    ResourceBundle.getBundle("MessageBundle_en_GB");
+                    language = "en";
+                    country = "GB";
+                    changeCurrentLocale(language, country);
                     break;
                 case "PL":
-                    ResourceBundle.getBundle("MessageBundle_pl_PL");
+                    language = "pl";
+                    country = "PL";
+                    changeCurrentLocale(language, country);
+                    break;
+                case "DE":
+                    language = "de";
+                    country = "DE";
+                    changeCurrentLocale(language, country);
                     break;
                 default:
-                    ResourceBundle.getBundle("MessageBundle_de_DE");
+                    language = "en";
+                    country = "GB";
+                    changeCurrentLocale(language, country);
                     break;
             }
+
             mainFrame.revalidate();
             mainFrame.repaint();
+            initComponents();
             // todo localization
         });
+    }
 
+    private void changeCurrentLocale(String language, String country) {
+        currentLocale = new Locale(language, country);
+        mainFrame.setCurrentLocale(currentLocale);
     }
 }

@@ -19,46 +19,36 @@ public class SpinnerEditor extends DefaultCellEditor {
     private JTextField textField;
     private boolean valueSet;
 
-    private int rowIndex;
-    private int colIndex;
+    private int rowIndex = 0;
+    private int colIndex = 0;
     private Integer previousItemNumber;
 
     // Initializes the spinner
-    SpinnerEditor() {
+    SpinnerEditor(ItemsTableView itemsTableView) {
         super(new JTextField());
-        spinner = new JSpinner();
+        spinner = new JSpinner() {
+            @Override
+            public void commitEdit() throws ParseException {
+                super.commitEdit();
+                if (rowIndex >= 0 && colIndex == 1) {
+                    Object selectedObject = ItemsTableView.table.getModel().getValueAt(rowIndex, colIndex - 1);
+                    if (previousItemNumber < Integer.parseInt(textField.getText())) {
+                        System.out.println("insert");
+                        ItemsTableView.warehouse.addItem(ItemType.valueOf(selectedObject.toString().toUpperCase()));
+                    } else if (previousItemNumber > Integer.parseInt(textField.getText())) {
+                        System.out.println("remove");
+                        ItemsTableView.warehouse.deleteItem(ItemType.valueOf(selectedObject.toString().toUpperCase()));
+                    }
+                    textField.setText(ItemsTableView.warehouse.getItems()
+                            .get(ItemType.valueOf(selectedObject.toString().toUpperCase()))
+                            .toString());
+
+                    itemsTableView.refresh();
+                }
+            }
+        };
         editor = ((JSpinner.DefaultEditor) spinner.getEditor());
         textField = editor.getTextField();
-
-//        textField.getDocument().addDocumentListener(new DocumentListener() {
-//            @Override
-//            public void insertUpdate(DocumentEvent e) {
-//                System.out.println("insert");
-//                Object selectedObject = ItemsTableView.table.getModel().getValueAt(rowIndex, colIndex+1);
-//                ItemsTableView.warehouse.addItem(ItemType.valueOf(selectedObject.toString().toUpperCase()));
-//            }
-//
-//            @Override
-//            public void removeUpdate(DocumentEvent e) {
-//                System.out.println("remove");
-//                Object selectedObject = ItemsTableView.table.getModel().getValueAt(rowIndex, colIndex+1);
-//                ItemsTableView.warehouse.deleteItem(ItemType.valueOf(selectedObject.toString().toUpperCase()));
-//            }
-//
-//            @Override
-//            public void changedUpdate(DocumentEvent e) {
-//            }
-//        });
-        spinner.addChangeListener(e -> {
-            Object selectedObject = ItemsTableView.table.getModel().getValueAt(rowIndex, colIndex + 1);
-            if (previousItemNumber < Integer.parseInt(textField.getText())) {
-                System.out.println("insert");
-                ItemsTableView.warehouse.addItem(ItemType.valueOf(selectedObject.toString().toUpperCase()));
-            } else if (previousItemNumber > Integer.parseInt(textField.getText())) {
-                System.out.println("remove");
-                ItemsTableView.warehouse.deleteItem(ItemType.valueOf(selectedObject.toString().toUpperCase()));
-            }
-        });
 
         textField.addFocusListener(new FocusListener() {
 

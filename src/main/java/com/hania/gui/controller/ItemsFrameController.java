@@ -3,12 +3,10 @@ package com.hania.gui.controller;
 import com.hania.gui.view.ItemsFrame;
 import com.hania.gui.view.ItemsTableView;
 import com.hania.gui.view.MainFrame;
-import com.hania.process.ItemType;
 import com.hania.process.Warehouse;
 import com.hania.process.WarehouseImpl;
 
 import javax.swing.*;
-import java.util.Map;
 
 /**
  * @author <a href="mailto:226154@student.pwr.edu.pl">Hanna Grodzicka</a>
@@ -35,10 +33,7 @@ class ItemsFrameController {
         warehouse = new WarehouseImpl();
         warehouse.loadItems();
 
-        Map<ItemType, Integer> items = warehouse.getItems();
-
         itemsTableView.setWarehouse(warehouse);
-//        itemsTableView.setCollection(items);
     }
 
     private void initComponents() {

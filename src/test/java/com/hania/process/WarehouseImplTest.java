@@ -30,6 +30,7 @@ public class WarehouseImplTest {
 
     @After
     public void tearDown() {
+        // todo read how not to ignore the result od this
         storage.delete();
     }
 

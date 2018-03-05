@@ -8,6 +8,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 import java.awt.*;
+import java.text.MessageFormat;
 import java.util.Map;
 
 /**
@@ -16,19 +17,22 @@ import java.util.Map;
 public class ItemsTableView extends JScrollPane {
 
     private DefaultTableModel model;
+
+    // todo remove static fields
     static Warehouse warehouse;
     static JTable table;
 
-    public ItemsTableView(Warehouse warehouse, int width, int height) {
-        this.warehouse = warehouse;
-        Object[] columns = new String[]{"Number of items", "Items", "Price"};    // todo intenationalization
+    ItemsTableView(Warehouse warehouse, int width, int height) {
+        ItemsTableView.warehouse = warehouse;
+        Object[] columns = new String[]{"Id", "Number of items", "Items", "Price"};    // todo intenationalization
         model = new DefaultTableModel(columns, 0);
 
         table = new JTable(model);
         table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        table.getColumnModel().getColumn(0).setPreferredWidth(0);
         TableColumnModel tcm = table.getColumnModel();
-        TableColumn tc0 = tcm.getColumn(0);
-        tc0.setCellEditor(new SpinnerEditor());
+        TableColumn tc0 = tcm.getColumn(1);
+        tc0.setCellEditor(new SpinnerEditor(this));
 
         table.setRowSelectionAllowed(false);
 
@@ -37,50 +41,83 @@ public class ItemsTableView extends JScrollPane {
     }
 
     public void setWarehouse(Warehouse warehouse) {
-        this.warehouse = warehouse;
+        ItemsTableView.warehouse = warehouse;
         refresh();
     }
 
-    private void refresh() {
+    void refresh() {
         model.setRowCount(0);
 
         for (Map.Entry<ItemType, Integer> entry : warehouse.getItems().entrySet()) {
             Object[] o = new Object[]{                      // todo intenationalization
-                    entry.getValue(),
                     entry.getKey().toString().toLowerCase(),
+                    entry.getValue(),
+                    getItemName(entry),
                     getItemPrice(entry.getKey()),
             };
             model.addRow(o);
         }
     }
 
+    private String getItemName(Map.Entry<ItemType, Integer> entry) {
+        String bundleKey;
+        // item.two
+        if (entry.getValue() % 10 >= 2 && entry.getValue() % 10 <= 4) {
+            bundleKey = "item.two." + entry.getKey().toString().toLowerCase();
+        }
+        // item.one
+        else if (entry.getValue() == 1) {
+            bundleKey = "item.one." + entry.getKey().toString().toLowerCase();
+        }
+        // item.zero
+        else {
+            bundleKey = "item.zero." + entry.getKey().toString().toLowerCase();
+        }
+
+        return MainFrame.resourceBundle.getString(bundleKey);
+    }
+
     private String getItemPrice(ItemType key) {
+        String price = "0";
         switch (key) {
             case DIODE:
-                return "12.34";
+                price = "12.34";
+                break;
             case TRANSISTOR:
-                return "42.72";
+                price = "42.72";
+                break;
             case CAPACITOR:
-                return "2.52";
+                price = "2.52";
+                break;
             case INDUCTOR:
-                return "44.32";
+                price = "44.32";
+                break;
             case MEMRISTOR:
-                return "23.45";
+                price = "23.45";
+                break;
             case ANTENNA:
-                return "3.76";
+                price = "3.76";
+                break;
             case OSCILLATOR:
-                return "50.98";
+                price = "50.98";
+                break;
             case SENSOR:
-                return "54.34";
+                price = "54.34";
+                break;
             case DETECTOR:
-                return "11.09";
+                price = "11.09";
+                break;
             case TRANSDUCER:
-                return "144.87";
+                price = "144.87";
+                break;
             case MOTOR:
-                return "13.00";
+                price = "13.00";
+                break;
             case BATTERY:
-                return "12.12";
+                price = "12.12";
+                break;
         }
-        return "";
+
+        return MessageFormat.format(MainFrame.resourceBundle.getString("item.price"), price);
     }
 }

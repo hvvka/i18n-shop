@@ -11,7 +11,7 @@ import java.util.Map;
  */
 public class WarehouseImpl implements Warehouse {
 
-    private static String STORAGE_PATH = "storage.json";
+    private static final String STORAGE_PATH = "storage.json";
     private File storage;
     private Map<ItemType, Integer> items;
     private ItemsProvider itemsProvider;
