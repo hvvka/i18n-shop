@@ -5,8 +5,6 @@ import com.hania.process.Warehouse;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableColumn;
-import javax.swing.table.TableColumnModel;
 import java.awt.*;
 import java.text.MessageFormat;
 import java.util.Map;
@@ -25,6 +23,33 @@ public class ItemsTableView extends JScrollPane {
     ItemsTableView(Warehouse warehouse, int width, int height) {
         ItemsTableView.warehouse = warehouse;
 
+        createTableModel();
+        createTable();
+        hideFirstColumn();
+        addSpinner();
+
+        setViewportView(table);
+        setPreferredSize(new Dimension(width, height));
+    }
+
+    private void addSpinner() {
+//        TableColumnModel tcm = table.getColumnModel();
+//        TableColumn tc0 = tcm.getColumn(1);
+//        tc0.setCellEditor(new SpinnerEditor(this));
+
+        table.getColumnModel().getColumn(1).setCellEditor(new SpinnerEditor(this));
+    }
+
+    private void createTable() {
+        table = new JTable(model);
+        table.setPreferredScrollableViewportSize(table.getPreferredSize());
+        table.setRowHeight(100);
+        table.getColumnModel().getColumn(3).setWidth(100);
+        table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        table.setRowSelectionAllowed(false);
+    }
+
+    private void createTableModel() {
         String tableColumnKey = "table.column";
         Object[] columnNames = new String[]{
                 MainFrame.resourceBundle.getString(tableColumnKey + "0"),
@@ -41,23 +66,6 @@ public class ItemsTableView extends JScrollPane {
                 return getValueAt(0, column).getClass();
             }
         };
-
-        table = new JTable(model);
-        table.setPreferredScrollableViewportSize(table.getPreferredSize());
-        table.setRowHeight(100);
-        table.getColumnModel().getColumn(3).setWidth(100);
-        table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-
-        hideFirstColumn();
-
-        TableColumnModel tcm = table.getColumnModel();
-        TableColumn tc0 = tcm.getColumn(1);
-        tc0.setCellEditor(new SpinnerEditor(this));
-
-        table.setRowSelectionAllowed(false);
-
-        setViewportView(table);
-        setPreferredSize(new Dimension(width, height));
     }
 
     private void hideFirstColumn() {

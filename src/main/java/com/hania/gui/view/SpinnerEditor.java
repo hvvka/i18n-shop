@@ -32,7 +32,6 @@ public class SpinnerEditor extends DefaultCellEditor {
             @Override
             public void commitEdit() throws ParseException {
                 super.commitEdit();
-                changeNumberOfItems(itemsTableView);
             }
         };
 
@@ -40,8 +39,11 @@ public class SpinnerEditor extends DefaultCellEditor {
         spinner.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent e) {
+                System.out.println("Value=" + spinner.getValue());
+                changeNumberOfItems(itemsTableView);
                 try {
                     spinner.commitEdit();
+                    editor.commitEdit();
                 } catch (ParseException e1) {
                     e1.printStackTrace();
                 }
@@ -54,15 +56,14 @@ public class SpinnerEditor extends DefaultCellEditor {
         textField.addFocusListener(new FocusListener() {
             @Override
             public void focusGained(FocusEvent fe) {
-                rowIndex = ItemsTableView.table.getSelectedRow();
-                colIndex = ItemsTableView.table.getSelectedColumn();
-                previousItemNumber = Integer.parseInt(textField.getText().replaceAll("\\s+", ""));
-
                 SwingUtilities.invokeLater(() -> {
                     if (valueSet) {
                         textField.setCaretPosition(1);
                     }
                 });
+                rowIndex = ItemsTableView.table.getSelectedRow();
+                colIndex = ItemsTableView.table.getSelectedColumn();
+                previousItemNumber = Integer.parseInt(spinner.getValue().toString().replaceAll("\\s+", ""));
             }
 
             @Override
@@ -75,10 +76,10 @@ public class SpinnerEditor extends DefaultCellEditor {
     private void changeNumberOfItems(ItemsTableView itemsTableView) {
         if (rowIndex >= 0 && colIndex == 1) {
             Object selectedObject = ItemsTableView.table.getModel().getValueAt(rowIndex, colIndex - 1);
-            if (previousItemNumber < Integer.parseInt(textField.getText().replaceAll("\\s+", ""))) {
+            if (previousItemNumber < Integer.parseInt(spinner.getValue().toString().replaceAll("\\s+", ""))) {
                 System.out.println("insert");
                 ItemsTableView.warehouse.addItem(ItemType.valueOf(selectedObject.toString().toUpperCase()));
-            } else if (previousItemNumber > Integer.parseInt(textField.getText())) {
+            } else if (previousItemNumber > Integer.parseInt(spinner.getValue().toString())) {
                 System.out.println("remove");
                 ItemsTableView.warehouse.deleteItem(ItemType.valueOf(selectedObject.toString().toUpperCase()));
             }
