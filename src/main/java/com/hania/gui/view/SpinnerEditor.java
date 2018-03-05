@@ -3,6 +3,8 @@ package com.hania.gui.view;
 import com.hania.process.ItemType;
 
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
@@ -29,34 +31,32 @@ public class SpinnerEditor extends DefaultCellEditor {
         spinner = new JSpinner() {
             @Override
             public void commitEdit() throws ParseException {
-                if (rowIndex >= 0 && colIndex == 1) {
-                    Object selectedObject = ItemsTableView.table.getModel().getValueAt(rowIndex, colIndex - 1);
-                    if (previousItemNumber < Integer.parseInt(textField.getText())) {
-                        System.out.println("insert");
-                        ItemsTableView.warehouse.addItem(ItemType.valueOf(selectedObject.toString().toUpperCase()));
-                    } else if (previousItemNumber > Integer.parseInt(textField.getText())) {
-                        System.out.println("remove");
-                        ItemsTableView.warehouse.deleteItem(ItemType.valueOf(selectedObject.toString().toUpperCase()));
-                    }
-//                    textField.setText(ItemsTableView.warehouse.getItems()
-//                            .get(ItemType.valueOf(selectedObject.toString().toUpperCase()))
-//                            .toString());
-
-                    itemsTableView.refresh();
-                }
                 super.commitEdit();
+                changeNumberOfItems(itemsTableView);
             }
         };
+
+
+        spinner.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                try {
+                    spinner.commitEdit();
+                } catch (ParseException e1) {
+                    e1.printStackTrace();
+                }
+            }
+        });
+
         editor = ((JSpinner.DefaultEditor) spinner.getEditor());
         textField = editor.getTextField();
 
         textField.addFocusListener(new FocusListener() {
-
             @Override
             public void focusGained(FocusEvent fe) {
                 rowIndex = ItemsTableView.table.getSelectedRow();
                 colIndex = ItemsTableView.table.getSelectedColumn();
-                previousItemNumber = Integer.parseInt(textField.getText());
+                previousItemNumber = Integer.parseInt(textField.getText().replaceAll("\\s+", ""));
 
                 SwingUtilities.invokeLater(() -> {
                     if (valueSet) {
@@ -70,6 +70,24 @@ public class SpinnerEditor extends DefaultCellEditor {
             }
         });
         textField.addActionListener(ae -> stopCellEditing());
+    }
+
+    private void changeNumberOfItems(ItemsTableView itemsTableView) {
+        if (rowIndex >= 0 && colIndex == 1) {
+            Object selectedObject = ItemsTableView.table.getModel().getValueAt(rowIndex, colIndex - 1);
+            if (previousItemNumber < Integer.parseInt(textField.getText().replaceAll("\\s+", ""))) {
+                System.out.println("insert");
+                ItemsTableView.warehouse.addItem(ItemType.valueOf(selectedObject.toString().toUpperCase()));
+            } else if (previousItemNumber > Integer.parseInt(textField.getText())) {
+                System.out.println("remove");
+                ItemsTableView.warehouse.deleteItem(ItemType.valueOf(selectedObject.toString().toUpperCase()));
+            }
+//
+//                    textField.setText(ItemsTableView.warehouse.getItems()
+//                            .get(ItemType.valueOf(selectedObject.toString().toUpperCase()))
+//                            .toString());
+        }
+        itemsTableView.refresh();
     }
 
     // Prepares the spinner component and returns it

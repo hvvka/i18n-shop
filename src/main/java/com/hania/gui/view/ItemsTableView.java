@@ -73,10 +73,9 @@ public class ItemsTableView extends JScrollPane {
 
     void refresh() {
         model.setRowCount(0);
-//        Icon itemIcon;
 
         for (Map.Entry<ItemType, Integer> entry : warehouse.getItems().entrySet()) {
-            Object[] o = new Object[]{                      // todo intenationalization
+            Object[] o = new Object[]{
                     entry.getKey().toString().toLowerCase(),
                     entry.getValue(),
                     getItemName(entry),
@@ -109,7 +108,8 @@ public class ItemsTableView extends JScrollPane {
     }
 
     private String setEnglishItemNames(Map.Entry<ItemType, Integer> entry) {
-        String bundleKey;// item.zero
+        String bundleKey;
+        // item.zero
         if (entry.getValue() == 0) {
             bundleKey = "item.zero." + entry.getKey().toString().toLowerCase();
         }
@@ -119,13 +119,14 @@ public class ItemsTableView extends JScrollPane {
         }
         // item.two
         else {
-            bundleKey = "item.zero." + entry.getKey().toString().toLowerCase();
+            bundleKey = "item.two." + entry.getKey().toString().toLowerCase();
         }
         return bundleKey;
     }
 
     private String setPolishItemNames(Map.Entry<ItemType, Integer> entry) {
-        String bundleKey;// item.two
+        String bundleKey;
+        // item.two
         if (entry.getValue() % 10 >= 2 && entry.getValue() % 10 <= 4
                 && entry.getValue() != 12 && entry.getValue() != 13 && entry.getValue() != 14) {
             bundleKey = "item.two." + entry.getKey().toString().toLowerCase();

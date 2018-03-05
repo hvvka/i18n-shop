@@ -41,8 +41,8 @@ class ItemsFrameController {
         itemsFrame.setVisible(true);
 
         backToMenuButton = itemsFrame.getBackToMenuButton();
+        backToMenuButton.setText(MainFrame.resourceBundle.getString("menu.back"));
         itemsTableView = itemsFrame.getItemsTableView();
-        //todo other components
     }
 
     private void initListeners() {
@@ -50,6 +50,5 @@ class ItemsFrameController {
             mainFrame.setVisible(true);
             itemsFrame.dispose();
         });
-        //todo components' listeners
     }
 }

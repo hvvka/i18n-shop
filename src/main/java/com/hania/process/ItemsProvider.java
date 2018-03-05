@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 public class ItemsProvider {
 
     public Map<ItemType, Integer> getItems(File storage) {
-        if (!storage.exists()) {
+        if (!storage.exists() || storage.listFiles() == null) {
             return createStorage(storage);
         } else {
             return loadStorage(storage);
