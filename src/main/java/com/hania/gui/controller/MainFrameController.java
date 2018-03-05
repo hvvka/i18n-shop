@@ -5,6 +5,7 @@ import com.hania.gui.view.MainFrame;
 import javax.swing.*;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.ResourceBundle;
 
 /**
  * @author <a href="mailto:226154@student.pwr.edu.pl">Hanna Grodzicka</a>
@@ -13,8 +14,10 @@ public class MainFrameController {
 
     private MainFrame mainFrame;
 
-    private JButton showProductsButton;
     private JComboBox chooseLanguageComboBox;
+    private JButton showProductsButton;
+    private JLabel welcomeLabel;
+    private JLabel languageLabel;
 
     private Locale currentLocale;
 
@@ -27,8 +30,22 @@ public class MainFrameController {
         mainFrame = new MainFrame();
         mainFrame.setVisible(true);
 
-        showProductsButton = mainFrame.getShowProductsButton();
         chooseLanguageComboBox = mainFrame.getChooseLanguageComboBox();
+
+        showProductsButton = mainFrame.getShowProductsButton();
+        welcomeLabel = mainFrame.getWelcomeLabel();
+        languageLabel = mainFrame.getLanguageLabel();
+
+        refreshLanguage();
+    }
+
+    private void refreshLanguage() {
+        if (currentLocale != null)
+            MainFrame.resourceBundle = ResourceBundle.getBundle("MessageBundle", currentLocale);
+
+        welcomeLabel.setText(MainFrame.resourceBundle.getString("menu.welcome"));
+        showProductsButton.setText(MainFrame.resourceBundle.getString("menu.show"));
+        languageLabel.setText(MainFrame.resourceBundle.getString("menu.language"));
     }
 
     private void initListeners() {
@@ -64,10 +81,9 @@ public class MainFrameController {
                     break;
             }
 
+            refreshLanguage();
             mainFrame.revalidate();
             mainFrame.repaint();
-            initComponents();
-            // todo localization
         });
     }
 
