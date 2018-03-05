@@ -30,15 +30,9 @@ public class MainFrame extends JFrame {
         setContentPane(mainPanel);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
-//        currentLocale = Locale.getDefault();
-        currentLocale = new Locale("en", "GB");
+        currentLocale = Locale.getDefault();
+//        currentLocale = new Locale("en", "GB");
         resourceBundle = ResourceBundle.getBundle("MessageBundle", currentLocale);
-
-//        welcomeLabel.setText(resourceBundle.getString("menu.welcome"));
-//
-//        welcomeLabel = new JLabel(resourceBundle.getString("menu.welcome"));
-//        languageLabel = new JLabel(resourceBundle.getString("menu.language"));
-//        showProductsButton = new JButton(resourceBundle.getString("menu.back"));
 
         // todo dock's and file's icon
         setIconImage(Toolkit.getDefaultToolkit().getImage("resources/bird.png"));

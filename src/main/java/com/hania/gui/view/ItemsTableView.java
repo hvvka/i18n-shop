@@ -36,7 +36,9 @@ public class ItemsTableView extends JScrollPane {
 
         table = new JTable(model);
         table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        table.getColumnModel().getColumn(0).setPreferredWidth(0);
+
+        hideFirstColumn();
+
         TableColumnModel tcm = table.getColumnModel();
         TableColumn tc0 = tcm.getColumn(1);
         tc0.setCellEditor(new SpinnerEditor(this));
@@ -45,6 +47,12 @@ public class ItemsTableView extends JScrollPane {
 
         setViewportView(table);
         setPreferredSize(new Dimension(width, height));
+    }
+
+    private void hideFirstColumn() {
+        table.getColumnModel().getColumn(0).setMinWidth(0);
+        table.getColumnModel().getColumn(0).setMaxWidth(0);
+        table.getColumnModel().getColumn(0).setWidth(0);
     }
 
     public void setWarehouse(Warehouse warehouse) {
