@@ -19,13 +19,13 @@ import static org.junit.Assert.assertEquals;
 public class WarehouseImplTest {
 
     private static Warehouse warehouse;
-    private static Map<ItemType, Integer> items;
     private File storage;
 
     @Before
     public void setUp() {
         warehouse = new WarehouseImpl();
         storage = new File(warehouse.getStorageName());
+        if (!storage.exists() || storage.length() == 0) storage.delete();
     }
 
     @After
@@ -118,4 +118,5 @@ public class WarehouseImplTest {
         warehouse.addItem(ItemType.DETECTOR);
         warehouse.addItem(ItemType.INDUCTOR);
     }
+
 }

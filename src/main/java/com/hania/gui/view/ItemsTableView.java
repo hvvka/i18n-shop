@@ -171,6 +171,7 @@ public class ItemsTableView extends JScrollPane {
                 break;
         }
 
+        if ("PL".equals(MainFrame.currentLocale.getCountry())) price = price.replace(".", ",");
         return MessageFormat.format(MainFrame.resourceBundle.getString("item.price"), price);
     }
 }
