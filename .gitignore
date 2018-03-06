@@ -15,7 +15,7 @@ out/
 #Gradle
 build/
 .gradle/
-gradlew.bat
+*.bat
 
 #GUI forms
 #*.form

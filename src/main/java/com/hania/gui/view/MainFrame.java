@@ -39,7 +39,7 @@ public class MainFrame extends JFrame {
     }
 
     private void addApplicationIcon() {
-        Image image = Toolkit.getDefaultToolkit().getImage("src/main/resources/icons/XD.jpg");
+        Image image = Toolkit.getDefaultToolkit().getImage("src/main/resources/icons/XD.png");
         Application.getApplication().setDockIconImage(image);
         setIconImage(image);
     }
