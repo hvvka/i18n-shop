@@ -1,5 +1,7 @@
 package com.hania.gui.view;
 
+import com.apple.eawt.Application;
+
 import javax.swing.*;
 import java.awt.*;
 import java.util.Locale;
@@ -16,13 +18,12 @@ public class MainFrame extends JFrame {
     private JPanel mainPanel;
     private JComboBox chooseLanguageComboBox;
 
-    public static ResourceBundle resourceBundle;
     private JButton showProductsButton;
     private JLabel welcomeLabel;
-
-    static Locale currentLocale;
     private JLabel languageLabel;
-
+    public static ResourceBundle resourceBundle;
+    static Locale currentLocale;
+    private JButton flagButton;
     public MainFrame() {
         super("");
         setSize(WIDTH, HEIGHT);
@@ -34,8 +35,13 @@ public class MainFrame extends JFrame {
 //        currentLocale = new Locale("en", "GB");
         resourceBundle = ResourceBundle.getBundle("MessageBundle", currentLocale);
 
-        // todo dock's and file's icon
-        setIconImage(Toolkit.getDefaultToolkit().getImage("resources/bird.png"));
+        addApplicationIcon();
+    }
+
+    private void addApplicationIcon() {
+        Image image = Toolkit.getDefaultToolkit().getImage("src/main/resources/icons/XD.jpg");
+        Application.getApplication().setDockIconImage(image);
+        setIconImage(image);
     }
 
     public JComboBox getChooseLanguageComboBox() {
@@ -52,6 +58,10 @@ public class MainFrame extends JFrame {
 
     public JLabel getWelcomeLabel() {
         return welcomeLabel;
+    }
+
+    public JButton getFlagButton() {
+        return flagButton;
     }
 
     public void setCurrentLocale(Locale currentLocale) {

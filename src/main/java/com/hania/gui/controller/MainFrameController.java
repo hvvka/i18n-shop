@@ -3,6 +3,8 @@ package com.hania.gui.controller;
 import com.hania.gui.view.MainFrame;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import java.awt.*;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.ResourceBundle;
@@ -18,6 +20,7 @@ public class MainFrameController {
     private JButton showProductsButton;
     private JLabel welcomeLabel;
     private JLabel languageLabel;
+    private JButton flagButton;
 
     private Locale currentLocale;
 
@@ -35,6 +38,7 @@ public class MainFrameController {
         showProductsButton = mainFrame.getShowProductsButton();
         welcomeLabel = mainFrame.getWelcomeLabel();
         languageLabel = mainFrame.getLanguageLabel();
+        flagButton = mainFrame.getFlagButton();
 
         refreshLanguage();
     }
@@ -46,6 +50,11 @@ public class MainFrameController {
         welcomeLabel.setText(MainFrame.resourceBundle.getString("menu.welcome"));
         showProductsButton.setText(MainFrame.resourceBundle.getString("menu.show"));
         languageLabel.setText(MainFrame.resourceBundle.getString("menu.language"));
+
+        flagButton.setBorder(new EmptyBorder(0, 0, 0, 0));
+        flagButton.setOpaque(false);
+        Image image = Toolkit.getDefaultToolkit().getImage(MainFrame.resourceBundle.getString("background"));
+        flagButton.setIcon(new ImageIcon(image.getScaledInstance(300, 150, 0)));
     }
 
     private void initListeners() {
@@ -81,9 +90,14 @@ public class MainFrameController {
                     break;
             }
 
+            Graphics g = mainFrame.getContentPane().getGraphics();
+            mainFrame.getContentPane().paintComponents(g);
+//            mainFrame.getContentPane().revalidate();
+//            mainFrame.getContentPane().repaint();
+//            mainFrame.addJPanelBackground();
             refreshLanguage();
-            mainFrame.revalidate();
-            mainFrame.repaint();
+//            mainFrame.revalidate();
+//            mainFrame.repaint();
         });
     }
 

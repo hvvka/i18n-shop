@@ -33,10 +33,6 @@ public class ItemsTableView extends JScrollPane {
     }
 
     private void addSpinner() {
-//        TableColumnModel tcm = table.getColumnModel();
-//        TableColumn tc0 = tcm.getColumn(1);
-//        tc0.setCellEditor(new SpinnerEditor(this));
-
         table.getColumnModel().getColumn(1).setCellEditor(new SpinnerEditor(this));
     }
 
@@ -102,52 +98,36 @@ public class ItemsTableView extends JScrollPane {
                 bundleKey = setPolishItemNames(entry);
                 break;
             case "GB":
-                bundleKey = setEnglishItemNames(entry);
+                bundleKey = setForeignItemNames(entry);
                 break;
             case "DE":
-                bundleKey = setEnglishItemNames(entry);     // todo, ale będzie tak samo jak dla niemieckiego
+                bundleKey = setForeignItemNames(entry);
                 break;
             default:
-                bundleKey = setEnglishItemNames(entry);
+                bundleKey = setForeignItemNames(entry);
                 break;
         }
 
         return MainFrame.resourceBundle.getString(bundleKey);
     }
 
-    private String setEnglishItemNames(Map.Entry<ItemType, Integer> entry) {
-        String bundleKey;
-        // item.zero
-        if (entry.getValue() == 0) {
-            bundleKey = "item.zero." + entry.getKey().toString().toLowerCase();
+    private String setForeignItemNames(Map.Entry<ItemType, Integer> entry) {
+        if (entry.getValue() == 1) {
+            return "item.one." + entry.getKey().toString().toLowerCase();
+        } else {
+            return "item.zero." + entry.getKey().toString().toLowerCase();
         }
-        // item.one
-        else if (entry.getValue() == 1) {
-            bundleKey = "item.one." + entry.getKey().toString().toLowerCase();
-        }
-        // item.two
-        else {
-            bundleKey = "item.two." + entry.getKey().toString().toLowerCase();
-        }
-        return bundleKey;
     }
 
     private String setPolishItemNames(Map.Entry<ItemType, Integer> entry) {
-        String bundleKey;
-        // item.two
         if (entry.getValue() % 10 >= 2 && entry.getValue() % 10 <= 4
                 && entry.getValue() != 12 && entry.getValue() != 13 && entry.getValue() != 14) {
-            bundleKey = "item.two." + entry.getKey().toString().toLowerCase();
+            return "item.two." + entry.getKey().toString().toLowerCase();
+        } else if (entry.getValue() == 1) {
+            return "item.one." + entry.getKey().toString().toLowerCase();
+        } else {
+            return "item.zero." + entry.getKey().toString().toLowerCase();
         }
-        // item.one
-        else if (entry.getValue() == 1) {
-            bundleKey = "item.one." + entry.getKey().toString().toLowerCase();
-        }
-        // item.zero
-        else {
-            bundleKey = "item.zero." + entry.getKey().toString().toLowerCase();
-        }
-        return bundleKey;
     }
 
     private String getItemPrice(ItemType key) {
