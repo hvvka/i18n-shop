@@ -92,12 +92,7 @@ public class MainFrameController {
 
             Graphics g = mainFrame.getContentPane().getGraphics();
             mainFrame.getContentPane().paintComponents(g);
-//            mainFrame.getContentPane().revalidate();
-//            mainFrame.getContentPane().repaint();
-//            mainFrame.addJPanelBackground();
             refreshLanguage();
-//            mainFrame.revalidate();
-//            mainFrame.repaint();
         });
     }
 
