@@ -16,5 +16,4 @@ public interface Warehouse {
     void deleteItem(ItemType itemType);
 
     String getStorageName();
-
 }

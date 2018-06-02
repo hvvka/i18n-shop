@@ -35,14 +35,14 @@ public class WarehouseImpl implements Warehouse {
     @Override
     public void addItem(ItemType itemType) {
         items.put(itemType, items.get(itemType) + 1);
-        saveToJson();
+        saveToJSON();
     }
 
     @Override
     public void deleteItem(ItemType itemType) {
         if (items.get(itemType) > 0)
             items.put(itemType, items.get(itemType) - 1);
-        saveToJson();
+        saveToJSON();
     }
 
     @Override
@@ -50,7 +50,7 @@ public class WarehouseImpl implements Warehouse {
         return STORAGE_PATH;
     }
 
-    private void saveToJson() {
+    private void saveToJSON() {
         try (Writer writer = new FileWriter(storage)) {
             Gson gson = new GsonBuilder().setPrettyPrinting().create();
             gson.toJson(items, writer);

@@ -68,11 +68,6 @@ public class MainFrameController {
             String country;
 
             switch (Objects.requireNonNull(chooseLanguageComboBox.getSelectedItem()).toString()) {
-                case "EN":
-                    language = "en";
-                    country = "GB";
-                    changeCurrentLocale(language, country);
-                    break;
                 case "PL":
                     language = "pl";
                     country = "PL";
@@ -83,6 +78,7 @@ public class MainFrameController {
                     country = "DE";
                     changeCurrentLocale(language, country);
                     break;
+                case "EN":
                 default:
                     language = "en";
                     country = "GB";

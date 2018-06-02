@@ -12,8 +12,8 @@ import java.util.ResourceBundle;
  */
 public class MainFrame extends JFrame {
 
-    private static final int WIDTH = 500;
-    private static final int HEIGHT = 500;
+    private static final int WIDTH = 600;
+    private static final int HEIGHT = 400;
 
     private JPanel mainPanel;
     private JComboBox chooseLanguageComboBox;
@@ -24,6 +24,7 @@ public class MainFrame extends JFrame {
     public static ResourceBundle resourceBundle;
     static Locale currentLocale;
     private JButton flagButton;
+
     public MainFrame() {
         super("");
         setSize(WIDTH, HEIGHT);
@@ -32,7 +33,6 @@ public class MainFrame extends JFrame {
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         currentLocale = Locale.getDefault();
-//        currentLocale = new Locale("en", "GB");
         resourceBundle = ResourceBundle.getBundle("MessageBundle", currentLocale);
 
         addApplicationIcon();

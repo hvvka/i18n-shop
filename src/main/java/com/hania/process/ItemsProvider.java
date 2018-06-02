@@ -14,9 +14,9 @@ import java.util.stream.Collectors;
 /**
  * @author <a href="mailto:226154@student.pwr.edu.pl">Hanna Grodzicka</a>
  */
-public class ItemsProvider {
+class ItemsProvider {
 
-    public Map<ItemType, Integer> getItems(File storage) {
+    Map<ItemType, Integer> getItems(File storage) {
         if (!storage.exists() || storage.length() == 0) {
             return createStorage(storage);
         } else {

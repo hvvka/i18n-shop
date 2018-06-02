@@ -11,6 +11,7 @@ ehthumbs.db
 out/
 *.iml
 *.iws
+*.ipr
 
 #Gradle
 build/
@@ -19,3 +20,6 @@ build/
 
 #GUI forms
 #*.form
+lab2.txt
+MANIFEST.MF
+storage.json
